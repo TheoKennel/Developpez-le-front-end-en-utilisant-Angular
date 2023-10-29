@@ -8,9 +8,16 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
+  { path: '/:countryId', loadChildren: () => import('./pages/details-page/details-page.module')
+                                        .then(m => m.DetailsPageModule)
+  },
   {
-    path: '**', // wildcard
-    component: NotFoundComponent,
+    path: '/404',
+    component : NotFoundComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/404',
   },
 ];
 
