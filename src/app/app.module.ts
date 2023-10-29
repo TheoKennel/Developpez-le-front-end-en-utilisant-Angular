@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { DetailsPageComponent } from './pages/details-page/details-page.component';
+import { HomePieGraphComponent } from './pages/home/home-pie-graph/home-pie-graph.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailsPageComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent, HomeComponent, NotFoundComponent, HomePieGraphComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, NgxChartsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

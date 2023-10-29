@@ -8,16 +8,16 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
-  { path: '/:countryId', loadChildren: () => import('./pages/details-page/details-page.module')
+  { path: 'detailsPage/:countryId', loadChildren: () => import('./pages/details-page/details-page.module')
                                         .then(m => m.DetailsPageModule)
   },
   {
-    path: '/404',
+    path: '404',
     component : NotFoundComponent
   },
   {
     path: '**',
-    redirectTo: '/404',
+    redirectTo: '404',
   },
 ];
 
