@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
-  { path: 'detailsPage/:countryId', loadChildren: () => import('./pages/details-page/details-page.module')
+  { path: 'detailsPage/:country', loadChildren: () => import('./pages/details-page/details-page.module')
                                         .then(m => m.DetailsPageModule)
   },
   {
