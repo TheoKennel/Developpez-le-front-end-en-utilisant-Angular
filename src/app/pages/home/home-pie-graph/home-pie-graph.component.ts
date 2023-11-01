@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OlympicCountry} from "../../../core/models/Olympic";
 import {Participation} from "../../../core/models/Participation";
 import {OlympicService} from "../../../core/services/olympic.service";
@@ -21,18 +21,19 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
 // Graph Setting
   showLegend = false;
   showLabels = true;
-  // legendPosition = 'right';
 
   constructor(private olympicService: OlympicService,
               private router: Router) {
   }
 
   ngOnInit() {
+    this.getDataForGraph()
+  }
 
+  getDataForGraph() {
     this.obervableSubscription$ = this.olympicService.getOlympics().subscribe(data => {
-      console.log('Observable actif');
       this.olympic = data;
-      this.dataGraph = this.olympic.map((olympicCountry, index) => {
+       this.dataGraph = this.olympic.map((olympicCountry, index) => {
         this.countryParticipation = olympicCountry.participations;
         return {
           name: olympicCountry.country,
@@ -45,6 +46,10 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
   onClickRedirect(country: string) {
     let redirectGraph = this.olympic.find(olympic => olympic.country === country)
     this.router.navigateByUrl(`/detailsPage/${redirectGraph?.country}`)
+  }
+
+  getTooltipText(item: any): string {
+    return `${item.data.name}   <br> 🏅 ${item.value}`;
   }
 
   ngOnDestroy() {

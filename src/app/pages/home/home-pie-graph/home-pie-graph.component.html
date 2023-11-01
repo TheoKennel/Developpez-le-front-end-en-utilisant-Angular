@@ -2,5 +2,7 @@
         [results]="dataGraph"
         [legend]="showLegend"
         [labels]="showLabels"
-        (select)="onClickRedirect($event.name)">
+        (select)="onClickRedirect($event.name)"
+        [tooltipText]="getTooltipText"
+        [trimLabels]=false>
 </ngx-charts-pie-chart>

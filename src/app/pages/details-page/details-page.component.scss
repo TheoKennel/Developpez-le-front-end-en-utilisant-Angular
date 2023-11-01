@@ -1,0 +1,28 @@
+.details_page-title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  background-color: #04838f;
+  border-radius: 6px;
+  padding: 3px 5px;
+  height: 35px;
+  width: 15%;
+  margin: auto;
+  margin-top: 25px;
+}
+
+.details_page-graph {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.page_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

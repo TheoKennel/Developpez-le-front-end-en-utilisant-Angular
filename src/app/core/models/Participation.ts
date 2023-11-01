@@ -1,7 +1,9 @@
 export class Participation {
-  id!: string;
-  year!: number;
-  city!: string;
-  medalsCount!: number;
-  athleteCount!: number;
+  constructor(
+    public id : string,
+    public year : number,
+    public city : string,
+    public medalsCount : number,
+    public athleteCount : number
+  ) {}
 }

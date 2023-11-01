@@ -1,8 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {OlympicService} from "../../core/services/olympic.service";
 import {OlympicCountry} from "../../core/models/Olympic";
-import {find, Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {Participation} from "../../core/models/Participation";
 
 @Component({
@@ -12,41 +12,53 @@ import {Participation} from "../../core/models/Participation";
 })
 export class DetailsPageComponent implements OnInit, OnDestroy {
 
-
-  observableData$!: Subscription
-  countryData!: OlympicCountry
-  participationDetails!: Participation[]
+  // @Input()
+  countryName!: string | null
   totalMedails!: number
   totalAthlete!: number
+  countryData!: OlympicCountry
+  participationDetails!: Participation[]
+  subscription$: Subscription  = new Subscription()
 
   constructor(private route: ActivatedRoute,
-              private olympicService: OlympicService) {
+              private olympicService: OlympicService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    let name = this.route.snapshot.paramMap.get("country")
-    this.observableData$ = this.olympicService.getOlympics().subscribe(country => {
-      const findCountry = country.find(country => country.country === name)
-      if(findCountry) {
-        this.countryData = findCountry
-        this.participationDetails = this.countryData.participations
-        console.log(this.participationDetails)
-      }
-    })
-    // for(let i = 0; i <= this.participationDetails.length; i++) {
-    //   totalMedails += this.participationDetails[i].medalsCount
-    //   console.log(this.participationDetails[i].medalsCount)
-    // }
-    this.totalMedails = this.participationDetails.reduce((acc, ele) => ele.medalsCount + acc , 0)
-    this.totalAthlete = this.participationDetails.reduce((acc, ele) => ele.athleteCount + acc, 0)
-    console.log(this.totalMedails)
-    console.log(this.totalAthlete)
-    console.log(this.countryData)
+    this.countryName = this.route.snapshot.paramMap.get('country')
+    this.getOlympicCountryData()
+    this.participationDetails = this.countryData.participations
+    this.getMedailsTotal()
+    this.getTotalAthlete()
+  }
+
+  getOlympicCountryData() {
+    this.subscription$.add(this.olympicService.getOlympicByCountry(this.countryName)
+      .subscribe(data => {
+        if(data) {
+          this.countryData = data
+        } else {
+          console.log("No country data retrieved")
+        }
+      }))
+  }
+
+  getMedailsTotal() {
+    return this.totalMedails = this.participationDetails.reduce((acc, ele) => ele.medalsCount + acc , 0);
+  }
+
+  getTotalAthlete() {
+    return this.totalAthlete = this.participationDetails.reduce((acc, ele) => ele.athleteCount + acc, 0);
+  }
+
+  onClickBack() {
+    this.router.navigateByUrl('')
   }
 
   ngOnDestroy() {
-    if(this.observableData$) {
-      this.observableData$.unsubscribe()
+    if(this.subscription$) {
+      this.subscription$.unsubscribe()
     }
   }
 }

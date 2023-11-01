@@ -1,6 +1,23 @@
-<p>details-page works!</p>
-<p>{{countryData.country}}</p>
-<p>{{countryData.participations.length}}</p>
-<p>{{totalMedails}}</p>
-<p>{{totalAthlete}}</p>
-<p></p>
+<div class="home_page">
+  <div class="page_body">
+    <h1 class="details_page-title">{{countryName}}</h1>
+  <div class="data_information">
+  <div class="data_number">
+    <h3>Number of entries</h3>
+    <p>{{participationDetails.length}}</p>
+  </div>
+  <div class="data_number">
+    <h3>Total number medals</h3>
+    <p>{{totalMedails}}</p>
+  </div>
+  <div class="data_number">
+    <h3>Total number of athletes</h3>
+    <p>{{totalAthlete}}</p>
+  </div>
+  </div>
+    <div class="details_page-graph">
+<app-details-page-line-graph></app-details-page-line-graph>
+    </div>
+<button (click)="onClickBack()">Retour 🏠</button>
+  </div>
+</div>

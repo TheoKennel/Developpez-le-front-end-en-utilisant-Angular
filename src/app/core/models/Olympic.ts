@@ -1,7 +1,12 @@
 import {Participation} from "./Participation";
 
 export class OlympicCountry {
-  id!: number;
-  country!: string;
-  participations!: Participation[];
+  constructor(
+    public id: number,
+    public country: string,
+    public participations: Participation[]
+  ) {
+  }
 }
+
+

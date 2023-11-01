@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, map} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import {OlympicCountry} from "../models/Olympic";
 
@@ -17,9 +17,7 @@ export class OlympicService {
     return this.http.get<OlympicCountry[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
       catchError((error, caught) => {
-        // TODO: improve error handling
         console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
         this.olympics$.next([]);
         return caught;
       })
@@ -30,12 +28,10 @@ export class OlympicService {
     return this.olympics$.asObservable();
   }
 
-  // getMedails()  {
-  //   let medailsCount = 0
-  //   return this.olympics$.subscribe(olympicCountry => {
-  //     olympicCountry.forEach(olympicCountry => {
-  //       olympicCountry.particpations.forEach(olympicCountryMedails => medailsCount += olympicCountryMedails.medalsCount)
-  //     })
-  // }
-  // })
+  getOlympicByCountry(countryName : string | null) {
+   return this.getOlympics().pipe(map(olympicCountry =>
+     olympicCountry.find(country => country.country === countryName)
+   ))
+  }
+  //getOlympicByCountry et Error
 }
