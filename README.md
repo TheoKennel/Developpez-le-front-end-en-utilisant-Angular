@@ -9,6 +9,7 @@ Ce projet est une application Angular conçue dans le cadre d'un cours sur OpenC
 - [Structure du Projet](#structure-du-projet)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
+- [Build](#build)
 - [Démarrage de l'Application](#démarrage-de-lapplication)
 - [Dépendance](#dependance)
 
@@ -40,6 +41,10 @@ Le projet est structuré comme suit :
 Pour installer les dépendances, exécutez la commande suivante :
 
 npm install
+
+## Build
+
+Run ng build pour build le project.
 
 ## Démarrage de l'Application 
 Pour lancer l'application en mode développement, utilisez :
