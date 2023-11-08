@@ -5,6 +5,7 @@ import {OlympicCountry} from "../../core/models/Olympic";
 import {Subscription, takeUntil} from "rxjs";
 import {Participation} from "../../core/models/Participation";
 import {BreakpointService} from "../../core/services/breakpoint.service";
+import {HomeComponent} from "../home/home.component";
 
 @Component({
   selector: 'app-details-page',
@@ -13,14 +14,13 @@ import {BreakpointService} from "../../core/services/breakpoint.service";
 })
 export class DetailsPageComponent implements OnInit, OnDestroy {
 
-  // @Input()
   countryName!: string | null
   totalMedails!: number
   totalAthlete!: number
   screenSize !: string;
   countryData!: OlympicCountry
   participationDetails!: Participation[]
-  subscription = new Subscription()
+  private subscription = new Subscription()
 
   constructor(private route: ActivatedRoute,
               private olympicService: OlympicService,
@@ -32,15 +32,19 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
     this.countryName = this.route.snapshot.paramMap.get('country')
     this.getOlympicCountryData()
     this.participationDetails = this.countryData.participations
-    this.getMedailsTotal()
+    this.getMedalsTotal()
     this.getTotalAthlete()
     this.responsiveBreakpoint()
   }
 
-  getOlympicCountryData() {
+  onClickBack() {
+    this.router.navigateByUrl('')
+  }
+
+  private getOlympicCountryData() {
     const olympicCountryDataSubscription = this.olympicService.getOlympicByCountry(this.countryName)
       .subscribe(data => {
-        if(data) {
+        if (data) {
           this.countryData = data
         } else {
           console.log("No country data retrieved")
@@ -49,26 +53,22 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
     this.subscription.add(olympicCountryDataSubscription)
   }
 
-  responsiveBreakpoint() {
+  private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => this.screenSize = screenSize)
     this.subscription.add(responsiveSubscription)
   }
 
-  getMedailsTotal() {
-    return this.totalMedails = this.participationDetails.reduce((acc, ele) => ele.medalsCount + acc , 0);
+  private getMedalsTotal() {
+    return this.totalMedails = this.participationDetails.reduce((acc, ele) => ele.medalsCount + acc, 0);
   }
 
-  getTotalAthlete() {
+  private getTotalAthlete() {
     return this.totalAthlete = this.participationDetails.reduce((acc, ele) => ele.athleteCount + acc, 0);
   }
 
-  onClickBack() {
-    this.router.navigateByUrl('')
-  }
-
   ngOnDestroy() {
-    if(this.subscription) {
+    if (this.subscription) {
       this.subscription.unsubscribe()
     }
   }

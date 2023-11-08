@@ -15,7 +15,6 @@ export class BreakpointService {
     Breakpoints.Small,
     Breakpoints.Medium,
     Breakpoints.Large,
-    Breakpoints.XLarge,
   ]).pipe(
     map(result => {
       console.log(result)

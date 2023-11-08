@@ -23,7 +23,6 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
   showXAxisLabel = true
   xAxisLabel = "Date"
   xAxisTicks: number[] = []
-
   private subscriptions = new Subscription()
 
   constructor(private detailsInfo: DetailsPageComponent,
@@ -38,11 +37,11 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
     this.responsiveBreakpoint()
   }
 
-  getYearForGraph() {
+  private getYearForGraph() {
     return this.xAxisTicks = this.participation.map(element => element.year)
   }
 
-  getDataForLineGraph() {
+  private getDataForLineGraph() {
     return [
       {
         name: this.detailsInfo.countryName ?? "unknow",
@@ -54,7 +53,7 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
     ]
   }
 
-  responsiveBreakpoint() {
+  private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => {
         this.screenSize = screenSize
@@ -63,11 +62,11 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
         } else if (this.screenSize === 'small') {
           this.view = [550, 300]
         } else if (this.screenSize === 'medium') {
-          this.view = [650, 450]
+          this.view = [650, 400]
         } else if (this.screenSize === 'large') {
-          this.view = [750, 500]
+          this.view = [750, 450]
         } else {
-          this.view = [850, 550]
+          this.view = [850, 450]
         }
       })
     this.subscriptions.add(responsiveSubscription)

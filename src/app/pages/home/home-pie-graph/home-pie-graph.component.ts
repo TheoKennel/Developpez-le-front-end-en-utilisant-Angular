@@ -27,7 +27,7 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
 
   constructor(private olympicService: OlympicService,
               private router: Router,
-              private breakpointService : BreakpointService) {
+              private breakpointService: BreakpointService) {
   }
 
   ngOnInit() {
@@ -35,10 +35,19 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
     this.responsiveBreakpoint()
   }
 
-  getDataForGraph() {
+  setTooltipText(item: any): string {
+    return `${item.data.name}   <br> 🏅 ${item.value}`;
+  }
+
+  onClickRedirect(country: string) {
+    let redirectGraph = this.olympic.find(olympic => olympic.country === country)
+    this.router.navigateByUrl(`/detailsPage/${redirectGraph?.country}`)
+  }
+
+  private getDataForGraph() {
     const graphSubscription = this.olympicService.getOlympics().subscribe(data => {
       this.olympic = data;
-       this.dataGraph = this.olympic.map((olympicCountry, index) => {
+      this.dataGraph = this.olympic.map((olympicCountry, index) => {
         this.countryParticipation = olympicCountry.participations;
         return {
           name: olympicCountry.country,
@@ -49,16 +58,7 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
     this.subscriptions.add(graphSubscription)
   }
 
-  onClickRedirect(country: string) {
-    let redirectGraph = this.olympic.find(olympic => olympic.country === country)
-    this.router.navigateByUrl(`/detailsPage/${redirectGraph?.country}`)
-  }
-
-  setTooltipText(item: any): string {
-    return `${item.data.name}   <br> 🏅 ${item.value}`;
-  }
-
-  responsiveBreakpoint() {
+  private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => this.screenSize = screenSize)
     this.subscriptions.add(responsiveSubscription)

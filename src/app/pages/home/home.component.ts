@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {map, Observable, Subject, takeUntil} from 'rxjs';
-import { OlympicService } from 'src/app/core/services/olympic.service';
+import {map, Observable, Subject, Subscription, takeUntil} from 'rxjs';
+import {OlympicService} from 'src/app/core/services/olympic.service';
 import {OlympicCountry} from "../../core/models/Olympic";
 import {BreakpointService} from "../../core/services/breakpoint.service";
 
@@ -10,15 +10,17 @@ import {BreakpointService} from "../../core/services/breakpoint.service";
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public olympics$: Observable<OlympicCountry[]> | undefined
 
   numberOfJo !: number;
   numberOfCountry !: number;
   screenSize !: string;
 
-  private destroy$ = new Subject<void>();
+  public olympics$: Observable<OlympicCountry[]> | undefined
+  private subscription = new Subscription()
+
   constructor(private olympicService: OlympicService,
-              private breakpointService: BreakpointService) {}
+              private breakpointService: BreakpointService) {
+  }
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics();
@@ -27,30 +29,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.responsiveBreakpoint()
   }
 
-  getNumberOfCountry() {
-    this.olympics$?.pipe(
+  private getNumberOfCountry() {
+    const subscribeFcCountry = this.olympics$?.pipe(
       map(data => data.length),
-      takeUntil(this.destroy$),
     ).subscribe(length => this.numberOfCountry = length
     )
+    this.subscription.add(subscribeFcCountry)
   }
 
-  getNumberOfJo() {
-    this.olympics$?.pipe(
+  private getNumberOfJo() {
+    const subscribeFcJo = this.olympics$?.pipe(
       map(data => data.length),
-      takeUntil(this.destroy$),
     ).subscribe(length => this.numberOfJo = length)
+    this.subscription.add(subscribeFcJo)
   }
 
-  responsiveBreakpoint() {
-    this.breakpointService.screenSize$.pipe(
-       takeUntil(this.destroy$))
+  private responsiveBreakpoint() {
+    const subscribeResponsive = this.breakpointService.screenSize$
       .subscribe(screenSize => this.screenSize = screenSize)
+    this.subscription.add(subscribeResponsive)
   }
 
   ngOnDestroy() {
-    this.destroy$.next()
-    this.destroy$.complete()
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
-
 }
