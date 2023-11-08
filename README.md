@@ -1,6 +1,7 @@
-# OlympicGamesStarter
+# Developpez-le-front-end-en-utilisant-Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+Ce projet est un fork du projet initial [OpenClassrooms-Student-Center/Developpez-le-front-end-en-utilisant-Angular](https://github.com/OpenClassrooms-Student-Center/Developpez-le-front-end-en-utilisant-Angular). 
+Il vise à développer les compétences en Angular pour la création d'applications front-end robustes et performantes.
 
 Don't forget to install your node_modules before starting (`npm install`).
 
