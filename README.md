@@ -10,9 +10,7 @@ Ce projet est une application Angular conçue dans le cadre d'un cours sur OpenC
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Démarrage de l'Application](#démarrage-de-lapplication)
-- [Tests](#tests)
-- [Contribution](#contribution)
-- [Licence](#licence)
+- [Dépendance](#dependance)
 
 ## Structure du Projet
 
@@ -25,20 +23,31 @@ Le projet est structuré comme suit :
       - `services/`: Services Angular pour la logique métier.
     - `pages/`: Composants représentant les pages de l'application.
       - `home/`: Page d'accueil de l'application.
-      - `details-page/`: Page de détails montrant plus d'informations.
+        - `home-pie-grap`: Component pour le graphique pie de la home page.   
+      - `details-page/`: Page montrant les informations celon un pays spécifique.
+        - `details-page-line-grap`: Component pour le graphique line de la page details.
       - `not-found/`: Page affichée lorsqu'une route n'est pas trouvée.
-  - `assets/`: Ressources statiques comme les images et les fichiers de style globaux.
-  - `environments/`: Fichiers de configuration pour les différents environnements de déploiement.
+  - `assets/`: Dossier qui contient les données JSON pour les graphiques.
 
 ## Prérequis
 
-- ![Node.js Logo](https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg)
-- ![NPM Logo](https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg)
-- ![Angular CLI](https://angular.io/assets/images/logos/angular/angular.svg)
+- Node.js
+- npm (généralement installé avec Node.js)
+- Angular CLI
 
 ## Installation
 
 Pour installer les dépendances, exécutez la commande suivante :
 
-```bash
 npm install
+
+## Démarrage de l'Application 
+Pour lancer l'application en mode développement, utilisez :
+
+ng serve
+
+Ouvrez votre navigateur et accédez à http://localhost:4200/.
+
+## Dépendance
+
+Utilisation de NGX-Charts pour les graphiques (pie et line)
