@@ -22,7 +22,6 @@ export class DetailsPageLineGraphComponent implements OnInit{
   xAxisLabel = "Date"
   xAxisTicks : number[] = []
 
-
   constructor(private detailsInfo: DetailsPageComponent) {
   }
 

@@ -11,14 +11,13 @@ import {Subscription} from "rxjs";
   styleUrls: ['./home-pie-graph.component.scss']
 })
 
-
 export class HomePieGraphComponent implements OnInit, OnDestroy {
 
   olympic!: OlympicCountry[]
   countryParticipation!: Participation[]
   dataGraph!: {}
   obervableSubscription$!: Subscription
-// Graph Setting
+// ---- Graph Setting ----
   showLegend = false;
   showLabels = true;
 
@@ -48,7 +47,7 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`/detailsPage/${redirectGraph?.country}`)
   }
 
-  getTooltipText(item: any): string {
+  setTooltipText(item: any): string {
     return `${item.data.name}   <br> 🏅 ${item.value}`;
   }
 
