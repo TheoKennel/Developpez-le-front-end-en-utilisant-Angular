@@ -33,14 +33,14 @@ Le projet est structuré comme suit :
 ## Prérequis
 
 - Node.js
-- npm (généralement installé avec Node.js)
+- npm ou yarn
 - Angular CLI
 
 ## Installation
 
 Pour installer les dépendances, exécutez la commande suivante :
 
-npm install
+npm install / yarn install
 
 ## Build
 
