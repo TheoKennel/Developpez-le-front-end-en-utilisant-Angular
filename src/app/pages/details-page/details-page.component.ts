@@ -2,8 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {OlympicService} from "../../core/services/olympic.service";
 import {OlympicCountry} from "../../core/models/Olympic";
-import {Subscription} from "rxjs";
+import {Subscription, takeUntil} from "rxjs";
 import {Participation} from "../../core/models/Participation";
+import {BreakpointService} from "../../core/services/breakpoint.service";
 
 @Component({
   selector: 'app-details-page',
@@ -16,13 +17,15 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
   countryName!: string | null
   totalMedails!: number
   totalAthlete!: number
+  screenSize !: string;
   countryData!: OlympicCountry
   participationDetails!: Participation[]
-  subscription$: Subscription  = new Subscription()
+  subscription = new Subscription()
 
   constructor(private route: ActivatedRoute,
               private olympicService: OlympicService,
-              private router: Router) {
+              private router: Router,
+              private breakpointService: BreakpointService) {
   }
 
   ngOnInit() {
@@ -31,17 +34,25 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
     this.participationDetails = this.countryData.participations
     this.getMedailsTotal()
     this.getTotalAthlete()
+    this.responsiveBreakpoint()
   }
 
   getOlympicCountryData() {
-    this.subscription$.add(this.olympicService.getOlympicByCountry(this.countryName)
+    const olympicCountryDataSubscription = this.olympicService.getOlympicByCountry(this.countryName)
       .subscribe(data => {
         if(data) {
           this.countryData = data
         } else {
           console.log("No country data retrieved")
         }
-      }))
+      })
+    this.subscription.add(olympicCountryDataSubscription)
+  }
+
+  responsiveBreakpoint() {
+    const responsiveSubscription = this.breakpointService.screenSize$
+      .subscribe(screenSize => this.screenSize = screenSize)
+    this.subscription.add(responsiveSubscription)
   }
 
   getMedailsTotal() {
@@ -57,8 +68,8 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.subscription$) {
-      this.subscription$.unsubscribe()
+    if(this.subscription) {
+      this.subscription.unsubscribe()
     }
   }
 }

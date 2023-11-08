@@ -87,3 +87,37 @@ button:hover {
     font-weight: bold;
     width: 250px !important;
   }
+
+// ----- Responsive -----
+
+.xsmall .page_body {
+  padding: 0;
+  width: 100%;
+}
+
+.xsmall .data_information {
+  justify-content: center;
+  margin-top: 4px;
+  width: 100%;
+}
+.xsmall .data_number {
+  margin: 4px;
+  width: 100px;
+  height: 40px;
+}
+.xsmall .data_number h3 {
+  font-size: 12px;
+}
+.xsmall .data_number p{
+  font-size: 14px;
+}
+
+.xsmall .pie-label {
+  font-size: 13px !important;
+}
+
+.xsmall .ngx-charts {
+  margin-top:  -40px !important;
+}
+
+

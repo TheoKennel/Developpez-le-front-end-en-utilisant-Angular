@@ -4,5 +4,6 @@
         [labels]="showLabels"
         (select)="onClickRedirect($event.name)"
         [tooltipText]="setTooltipText"
-        [trimLabels]=false>
+        [trimLabels]=false
+        [ngClass]="screenSize">
 </ngx-charts-pie-chart>

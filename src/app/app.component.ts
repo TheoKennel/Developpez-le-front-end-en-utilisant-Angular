@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
 import { OlympicService } from './core/services/olympic.service';
+import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
   selector: 'app-root',

@@ -33,5 +33,5 @@ export class OlympicService {
      olympicCountry.find(country => country.country === countryName)
    ))
   }
-  //getOlympicByCountry et Error
+  //Error
 }

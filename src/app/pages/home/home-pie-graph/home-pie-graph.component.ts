@@ -3,7 +3,9 @@ import {OlympicCountry} from "../../../core/models/Olympic";
 import {Participation} from "../../../core/models/Participation";
 import {OlympicService} from "../../../core/services/olympic.service";
 import {Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Subscription, takeUntil} from "rxjs";
+import {BreakpointObserver} from "@angular/cdk/layout";
+import {BreakpointService} from "../../../core/services/breakpoint.service";
 
 @Component({
   selector: 'app-home-pie-graph',
@@ -16,21 +18,25 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
   olympic!: OlympicCountry[]
   countryParticipation!: Participation[]
   dataGraph!: {}
-  obervableSubscription$!: Subscription
+  screenSize !: string;
 // ---- Graph Setting ----
   showLegend = false;
   showLabels = true;
 
+  private subscriptions = new Subscription()
+
   constructor(private olympicService: OlympicService,
-              private router: Router) {
+              private router: Router,
+              private breakpointService : BreakpointService) {
   }
 
   ngOnInit() {
     this.getDataForGraph()
+    this.responsiveBreakpoint()
   }
 
   getDataForGraph() {
-    this.obervableSubscription$ = this.olympicService.getOlympics().subscribe(data => {
+    const graphSubscription = this.olympicService.getOlympics().subscribe(data => {
       this.olympic = data;
        this.dataGraph = this.olympic.map((olympicCountry, index) => {
         this.countryParticipation = olympicCountry.participations;
@@ -40,6 +46,7 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
         }
       })
     })
+    this.subscriptions.add(graphSubscription)
   }
 
   onClickRedirect(country: string) {
@@ -51,9 +58,15 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
     return `${item.data.name}   <br> 🏅 ${item.value}`;
   }
 
+  responsiveBreakpoint() {
+    const responsiveSubscription = this.breakpointService.screenSize$
+      .subscribe(screenSize => this.screenSize = screenSize)
+    this.subscriptions.add(responsiveSubscription)
+  }
+
   ngOnDestroy() {
-    if (this.obervableSubscription$) {
-      this.obervableSubscription$.unsubscribe()
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe()
     }
   }
 }

@@ -1,18 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Participation} from "../../../core/models/Participation";
 import {DetailsPageComponent} from "../details-page.component";
+import {BreakpointService} from "../../../core/services/breakpoint.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-details-page-line-graph',
   templateUrl: './details-page-line-graph.component.html',
   styleUrls: ['./details-page-line-graph.component.scss']
 })
-export class DetailsPageLineGraphComponent implements OnInit{
+export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
   dataLineGraph!: { name: string, series: { value: number, name: number }[] }[]
   participation!: Participation[]
-
+  screenSize !: string;
   // ----- Graph Settings -----
-  view: [number, number] = [700, 300]
+  view: [number, number] = [0, 0]
   legend = false
   xAxis = true
   yAxis = true
@@ -20,9 +22,12 @@ export class DetailsPageLineGraphComponent implements OnInit{
   roundDomains = false
   showXAxisLabel = true
   xAxisLabel = "Date"
-  xAxisTicks : number[] = []
+  xAxisTicks: number[] = []
 
-  constructor(private detailsInfo: DetailsPageComponent) {
+  private subscriptions = new Subscription()
+
+  constructor(private detailsInfo: DetailsPageComponent,
+              private breakpointService: BreakpointService) {
   }
 
   ngOnInit() {
@@ -30,20 +35,47 @@ export class DetailsPageLineGraphComponent implements OnInit{
     this.getYearForGraph()
     this.getDataForLineGraph()
     this.dataLineGraph = this.getDataForLineGraph()
+    this.responsiveBreakpoint()
   }
 
   getYearForGraph() {
     return this.xAxisTicks = this.participation.map(element => element.year)
   }
+
   getDataForLineGraph() {
     return [
       {
-          name: this.detailsInfo.countryName ?? "unknow",
-          series: this.participation.map(data => ({
+        name: this.detailsInfo.countryName ?? "unknow",
+        series: this.participation.map(data => ({
           value: data.medalsCount,
-          name:data.year,
+          name: data.year,
         }))
       }
     ]
+  }
+
+  responsiveBreakpoint() {
+    const responsiveSubscription = this.breakpointService.screenSize$
+      .subscribe(screenSize => {
+        this.screenSize = screenSize
+        if (this.screenSize === 'xsmall') {
+          this.view = [350, 200]
+        } else if (this.screenSize === 'small') {
+          this.view = [550, 300]
+        } else if (this.screenSize === 'medium') {
+          this.view = [650, 450]
+        } else if (this.screenSize === 'large') {
+          this.view = [750, 500]
+        } else {
+          this.view = [850, 550]
+        }
+      })
+    this.subscriptions.add(responsiveSubscription)
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe()
+    }
   }
 }
