@@ -56,3 +56,4 @@ Ouvrez votre navigateur et accédez à http://localhost:4200/.
 ## Dépendance
 
 Utilisation de NGX-Charts pour les graphiques (pie et line)
+https://swimlane.github.io/ngx-charts/#/ngx-charts/pie-chart
