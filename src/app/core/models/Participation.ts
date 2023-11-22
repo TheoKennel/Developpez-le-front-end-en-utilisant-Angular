@@ -1,3 +1,4 @@
+// Classe modélisant les participations d'un pays.
 export class Participation {
   constructor(
     public id : string,

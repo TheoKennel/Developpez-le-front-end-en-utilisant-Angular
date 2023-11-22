@@ -28,24 +28,34 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
               private breakpointService: BreakpointService) {
   }
 
+  /**
+   * Initialise le composant et charge les données du pays sélectionné
+   */
   ngOnInit() {
     this.countryName = this.route.snapshot.paramMap.get('country')
     this.getOlympicCountryData()
-    this.participationDetails = this.countryData.participations
-    this.getMedalsTotal()
-    this.getTotalAthlete()
     this.responsiveBreakpoint()
   }
 
+  /**
+   * Gère le clic sur le bouton de retour
+   */
   onClickBack() {
     this.router.navigateByUrl('')
   }
 
+  /**
+   * Récupère les données détaillées du pays olympique, initialise les détails de participation,
+   * et calcule le total des médailles / athlètes
+   */
   private getOlympicCountryData() {
     const olympicCountryDataSubscription = this.olympicService.getOlympicByCountry(this.countryName)
       .subscribe(data => {
         if (data) {
           this.countryData = data
+          this.participationDetails = this.countryData.participations;
+          this.getMedalsTotal();
+          this.getTotalAthlete();
         } else {
           console.log("No country data retrieved")
         }
@@ -53,16 +63,25 @@ export class DetailsPageComponent implements OnInit, OnDestroy {
     this.subscription.add(olympicCountryDataSubscription)
   }
 
+  /**
+   * Ajuste la vue en fonction de la taille de l'écran
+   */
   private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => this.screenSize = screenSize)
     this.subscription.add(responsiveSubscription)
   }
 
+  /**
+   * Calcule le total des médailles
+   */
   private getMedalsTotal() {
     return this.totalMedails = this.participationDetails.reduce((acc, ele) => ele.medalsCount + acc, 0);
   }
 
+  /**
+   * Calcule le total des athlètes
+   */
   private getTotalAthlete() {
     return this.totalAthlete = this.participationDetails.reduce((acc, ele) => ele.athleteCount + acc, 0);
   }

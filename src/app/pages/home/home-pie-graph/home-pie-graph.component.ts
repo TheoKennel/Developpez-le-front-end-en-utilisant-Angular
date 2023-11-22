@@ -35,15 +35,18 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
     this.responsiveBreakpoint()
   }
 
-  setTooltipText(item: any): string {
-    return `${item.data.name}   <br> 🏅 ${item.value}`;
-  }
-
+  /**
+   * Redirige vers la page de détails du pays sélectionné
+   * @param country Nom du pays sélectionné
+   */
   onClickRedirect(country: string) {
     let redirectGraph = this.olympic.find(olympic => olympic.country === country)
     this.router.navigateByUrl(`/detailsPage/${redirectGraph?.country}`)
   }
 
+  /**
+   * Récupère les données pour le graphique en pie
+   */
   private getDataForGraph() {
     const graphSubscription = this.olympicService.getOlympics().subscribe(data => {
       this.olympic = data;
@@ -51,19 +54,25 @@ export class HomePieGraphComponent implements OnInit, OnDestroy {
         this.countryParticipation = olympicCountry.participations;
         return {
           name: olympicCountry.country,
-          value: olympicCountry.participations.reduce((acc, element) => acc + element.medalsCount, 0),
+          value: olympicCountry.participations.reduce((acc, element) => acc + element.medalsCount, 0)
         }
       })
     })
     this.subscriptions.add(graphSubscription)
   }
 
+  /**
+   * Méthode pour écouter les breakpoint de la taille d'écran pour le responsive
+   */
   private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => this.screenSize = screenSize)
     this.subscriptions.add(responsiveSubscription)
   }
 
+  /**
+   * Nettoie les abonnements lors de la destruction du composant
+   */
   ngOnDestroy() {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe()

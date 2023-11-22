@@ -8,6 +8,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
+  // Mise en place du Lazy Loading
   { path: 'detailsPage/:country', loadChildren: () => import('./pages/details-page/details-page.module')
                                         .then(m => m.DetailsPageModule)
   },
@@ -16,6 +17,7 @@ const routes: Routes = [
     component : NotFoundComponent
   },
   {
+    // Redirige vers la page 404 si un chemin inconnu est entré
     path: '**',
     redirectTo: '404',
   },

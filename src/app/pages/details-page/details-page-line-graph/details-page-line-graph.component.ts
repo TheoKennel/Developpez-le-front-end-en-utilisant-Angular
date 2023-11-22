@@ -4,6 +4,9 @@ import {DetailsPageComponent} from "../details-page.component";
 import {BreakpointService} from "../../../core/services/breakpoint.service";
 import {Subscription} from "rxjs";
 
+/**
+ * Composant pour afficher le graphique en ligne des détails de participation
+ */
 @Component({
   selector: 'app-details-page-line-graph',
   templateUrl: './details-page-line-graph.component.html',
@@ -29,6 +32,9 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
               private breakpointService: BreakpointService) {
   }
 
+  /**
+   * Initialise le composant et charge les données nécessaires
+   */
   ngOnInit() {
     this.participation = this.detailsInfo.participationDetails
     this.getYearForGraph()
@@ -37,10 +43,16 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
     this.responsiveBreakpoint()
   }
 
+  /**
+   * Calcule les années pour le graphique à partir des données de participation
+   */
   private getYearForGraph() {
     return this.xAxisTicks = this.participation.map(element => element.year)
   }
 
+  /**
+   * Prépare les données pour le graphique en ligne
+   */
   private getDataForLineGraph() {
     return [
       {
@@ -53,6 +65,9 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
     ]
   }
 
+  /**
+   * Ajuste la taille du graphique en fonction de la taille de l'écran
+   */
   private responsiveBreakpoint() {
     const responsiveSubscription = this.breakpointService.screenSize$
       .subscribe(screenSize => {
@@ -72,6 +87,9 @@ export class DetailsPageLineGraphComponent implements OnInit, OnDestroy {
     this.subscriptions.add(responsiveSubscription)
   }
 
+  /**
+   * Nettoie les abonnements lors de la destruction du composant
+   */
   ngOnDestroy() {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe()

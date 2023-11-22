@@ -1,5 +1,6 @@
 import {Participation} from "./Participation";
 
+// Classe modélisant un pays olympique.
 export class OlympicCountry {
   constructor(
     public id: number,
